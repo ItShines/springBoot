@@ -1,0 +1,52 @@
+基本配置好了就可以启动项目，通过http://localhost:8080/learn 访问，
+我使用的SpringBoot是2.0.2.RELEASE版本，jdk1.8,以前介绍过，运行项目有三种方式，这里我都做过了一次测试，发现在maven中jasper依赖有加provided和注释掉该依赖范围运行的效果不大一样，具体对比如下：
+
+有添加provided的情况：
+    右键运行启动类，访问页面报404错误
+    使用spring-boot:run运行正常
+    打包成jar，通过 java -jar demo-0.0.1-SNAPSHOT.jar 运行报错
+    打包成war，通过 java -jar demo-0.0.1-SNAPSHOT.war 运行正常
+
+把provided 注释掉的情况
+    右键运行启动类，访问页面正常
+    spring-boot:run运行 访问页面正常
+    打包成jar，通过 java -jar demo-0.0.1-SNAPSHOT.jar 运行报错
+    打包成war，通过 java -jar demo-0.0.1-SNAPSHOT.war 运行正常
+
+外部的Tomcat服务器部署war包
+    继承SpringBootServletInitializer
+    外部容器部署的话，就不能依赖于Application的main函数了，
+    而是要以类似于web.xml文件配置的方式来启动Spring应用上下文，
+    此时我们需要在启动类中继承SpringBootServletInitializer并实现configure方法：
+    这个类的作用与在web.xml中配置负责初始化Spring应用上下文的监听器作用类似，只不过在这里不需要编写额外的XML文件了。
+        Application文件有对应代码
+    pom.xml修改tomcat相关的配置
+    如果要将最终的打包形式改为war的话，还需要对pom.xml文件进行修改，因为spring-boot-starter-web中包含内嵌的tomcat容器，所以直接部署在外部容器会冲突报错。这里有两种方法可以解决，如下
+    方法一：
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        在这里需要移除对嵌入式Tomcat的依赖，这样打出的war包中，在lib目录下才不会包含Tomcat相关的jar包，否则将会出现启动错误。
+        还有一个很关键的关键点，就是tomcat-embed-jasper中scope必须是provided。
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        因为SpringBootServletInitializer需要依赖 javax.servlet，而tomcat-embed-jasper下面的tomcat-embed-core中就有这个javax.servlet，如果没用provided，
+        最终打好的war里面会有servlet-api这个jar，这样就会跟tomcat本身的冲突了。这个关键点同样适应于下面说的第二种方法。
+        方法二：
+        直接添加如下配置即可：
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        这种方式的好处是，打包的war包同时适合java -jar命令启动以及部署到外部容器中。
