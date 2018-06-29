@@ -1,0 +1,9 @@
+1.本项目主体采用spring + springMVC + Hibernate + Firebird + maven 搭建的api形式接口项目，采用原生sql;
+    spring
+2.PrescriptionController 主要内容为所有的接口请求地址 并且为面向接口形式的编程,无需关注实体;
+3.DataPrescriptionServiceImpl 为控制器对应接口的全部实现方法，包含hibernate事务数据库连接等方法;
+4.Entity为对应实体，由于采用原生sql故无对应dao层，无hibernate映射文件;
+5.日志采用logback方式记录;
+6.该框架可融合前端框架，对应视图解析器已配置完毕，不过未融合前端框架，可选择前后台分离形式;
+7.HttpclientUtil为httpclient测试请求工具类采用jsonobject形式，具体为处理;
+8.TestControllerTest为普通测试类，即模拟访问测试;测试方法后续持续更新。

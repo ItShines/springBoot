@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</property>
+    <property name="hibernate.connection.driver_class">org.firebirdsql.jdbc.FBDriver</property>
+    <!--<property name="hibernate.connection.url">jdbc:firebirdsql:localhost:E:\tools\softWare\jimuyun\Firebird\Firebird_2_0\MDDB.FDB</property>-->
+    <property name="hibernate.connection.url">jdbc:firebirdsql:localhost:E:\tools\softWare\jimuyun\Firebird\Firebird_2_0\HISDB.FDB</property>
+    <property name="hibernate.connection.username">SYSDBA</property>
+    <property name="hibernate.connection.password">masterkey</property>
+    <!-- 指定连接池里最大连接数 -->
+    <property name="hibernate.c3p0.max_size">20</property>
+    <!-- 指定连接池里最小连接数 -->
+    <property name="hibernate.c3p0.min_size">1</property>
+    <!-- 指定连接池里连接的超时时长 -->
+    <property name="hibernate.c3p0.timeout">5000</property>
+    <!-- 指定连接池里最大缓存多少个Statement对象 -->
+    <property name="hibernate.c3p0.max_statements">100</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <property name="hibernate.c3p0.acquire_increment">2</property>
+    <property name="hibernate.c3p0.validate">true</property>
+
+    <!-- 配置 Hibernate 的基本信息 -->
+    <!--打印sql语句-->
+    <property name="show_sql">true</property>
+    <!--格式化sql语句-->
+    <property name="format_sql">true</property>
+
+    <!-- 指定自动生成数据表的策略 -->
+    <!--<property name="hbm2ddl.auto">update</property>-->
+
+    <!-- 将Session与线程绑定=> 只有配置了该配置,才能使用getCurrentSession -->
+    <property name="current_session_context_class">thread</property>
+
+  </session-factory>
+</hibernate-configuration>
+
+
