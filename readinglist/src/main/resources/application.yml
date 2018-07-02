@@ -1,0 +1,7 @@
+#根日志级别要设置为 WARN
+logging:
+      path: D:\
+      file: BookWorm.log
+      level:
+          root: WARN
+          org.springframework.security: DEBUG

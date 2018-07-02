@@ -10,7 +10,11 @@
     <div th:unless="${#lists.isEmpty(books)}">
         <dl th:each="book : ${books}">
             <dt class="bookHeadline">
-                <span th:text="${book.title}"></span>
+                <a th:href="'http://www.amazon.com/gp/product/'
+                            + ${book.isbn}
+                            + '/tag=' + ${amazonID}"
+                   th:text="${book.title}">Title</a>
+                <!--<span th:text="${book.title}"></span>-->
                 <span th:text="${book.author}"></span>
                 (ISBN : <span th:text="${book.isbn}"></span>)
             </dt>
