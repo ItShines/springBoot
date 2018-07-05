@@ -2,6 +2,7 @@ package com.java.controller;
 
 import com.java.entity.Book;
 import com.java.service.ReadingListRepository;
+import com.java.utils.AmazonProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
@@ -27,11 +28,13 @@ public class ReadingListController {
         this.associateId = associateId;
     }
 
+    private AmazonProperties amazonProperties;
     private ReadingListRepository readingListRepository ;
 
     @Autowired
-    public ReadingListController(ReadingListRepository readingListRepository){
+    public ReadingListController(ReadingListRepository readingListRepository,AmazonProperties amazonProperties){
         this.readingListRepository = readingListRepository;
+        this.amazonProperties = amazonProperties;
     }
 
     @RequestMapping(value = "/{reader}",method = RequestMethod.GET)
@@ -41,6 +44,7 @@ public class ReadingListController {
             model.addAttribute("books",readingList);
             model.addAttribute("reader",reader);
             model.addAttribute("amazonID",associateId);
+            model.addAttribute("amazonID",amazonProperties.getAssociateId());
         }
         return "readingList";
     }
