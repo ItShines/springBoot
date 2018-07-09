@@ -41,7 +41,7 @@ public class ReadinglistApplicationTests {
     }
 
     @Test
-    public void postBook() throws Exception {
+    public void postBook() throws Exception{
         mockMvc.perform(post("/readingList")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("title", "BOOK TITLE")
